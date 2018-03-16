@@ -1,0 +1,8 @@
+/* pages/combine/combine.wxss */
+.result_btn{
+  width: 90%;
+  height: 42px;
+  margin-top: 10%;
+  background-color: #ff5555;
+  color: white;
+}

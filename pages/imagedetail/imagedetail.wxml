@@ -1,0 +1,12 @@
+<view class='body_view'>
+  <swiper class='wx-swiper' autoplay='{{is_play}}' current="{{currentTab}}" bindchange="bindChange">
+    <swiper-item class='wx-swiper-item' wx:key='id' wx:for="{{images}}" wx:for-item="item">
+      <image class='wx-image' src='{{item.hurl}}' mode='widthFix'></image>
+    </swiper-item>
+  </swiper>
+  <view class='bottom_fun'>
+    <image src='/images/down_head_icon.png' class='fun_btn'></image>
+    <image src='/images/in_keep_press_icon.png' class='fun_btn'></image>
+    <image src='/images/iv_edit_icon.png' class='fun_btn' bindtap='imageedit'></image>
+  </view>
+</view>

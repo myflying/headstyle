@@ -1,0 +1,6 @@
+<view class='img-list'>
+  <view class='img-item' wx:for="{{array}}" wx:key="id" wx:for-item="item" bindtap='imagedetail' data-index='{{index}}'>
+    <image src='{{item.hurl}}' class='item-img' mode='widthFix'></image>
+  </view>
+  <view class='load_more' wx:if="{{is_load_more}}"><image src='/images/load_more.gif' class='load_more_image'></image></view>
+</view>
