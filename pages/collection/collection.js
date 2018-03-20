@@ -35,6 +35,15 @@ Page({
           wx.setNavigationBarTitle({
             title: res.data.data[0].title
           })
+          
+          if (list.length % 3 > 0) {
+            for (var i = 0; i < list.length; i++) {
+              if (i == list.length - 1) {
+                list[i].fixStyles = 'margin-right : auto;'
+              }
+            }
+          }
+
           that.setData({
             array: list,
             top_img: list[0].hurl,
@@ -52,5 +61,20 @@ Page({
   onPullDownRefresh: function () {
     var Page$this = this;
     this.getData(Page$this);
+  },
+  imagedetail: function (e) {
+    var index = e.currentTarget.dataset.index
+
+    var selectPage = 0;
+
+    if ((index + 1) % 50 == 0) {
+      selectPage = (index + 1) / 50;
+    } else {
+      selectPage = ((index + 1) / 50) + 1
+    }
+
+    wx.navigateTo({
+      url: '../imagecdetail/imagecdetail?currentIndex=' + index + '&page=' + parseInt(selectPage) + '&sid=' + sid
+    })
   }
 })

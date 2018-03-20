@@ -38,6 +38,14 @@ Page({
         wx.stopPullDownRefresh();
         list = res.data.data;
        
+        if (list.length % 3 > 0) {
+          for (var i = 0; i < list.length; i++) {
+            if (i == list.length - 1) {
+              list[i].fixStyles = 'margin-right : auto; margin-left:5rpx;'
+            }
+          }
+        }
+
         that.setData({
           array: list,
         });
@@ -68,6 +76,14 @@ Page({
         wx.hideLoading()
         list = list.concat(res.data.data);
         console.log(list.length)
+
+        if (list.length % 3 > 0) {
+          for (var i = 0; i < list.length; i++) {
+            if (i == list.length - 1) {
+              list[i].fixStyles = 'margin-right : auto; '
+            }
+          }
+        }
         Page$this.setData({
           array: list,
           is_load_more: false
@@ -84,4 +100,19 @@ Page({
       is_load_more: true
     })
   },
+  imagedetail: function (e) {
+    var index = e.currentTarget.dataset.index
+
+    var selectPage = 0;
+
+    if ((index + 1) % 50 == 0) {
+      selectPage = (index + 1) / 50;
+    } else {
+      selectPage = ((index + 1) / 50) + 1
+    }
+
+    wx.navigateTo({
+      url: '../imagedetail/imagedetail?currentIndex=' + index + '&page=' + parseInt(selectPage) + '&cid='+cid
+    })
+  }
 })

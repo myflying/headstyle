@@ -7,15 +7,13 @@ Page({
   },
 
   onLoad: function (options) {
-    this.bgPic = options.url
-    console.log('result img--->' + this.bgPic)
-    // wx.getImageInfo({
-    //   src:app.globalData.bgPic,
-    //   success: res => {
-    //       this.bgPic=res.path
-    //       this.draw();
-    //   }
-    // })
+    wx.getImageInfo({
+      src: app.globalData.bgPic,
+      success: res => {
+        this.bgPic = res.path
+        this.draw();
+      }
+    })
   },
 
   /**
@@ -30,7 +28,7 @@ Page({
     let scale = app.globalData.scale;
     let rotate = app.globalData.rotate;
     let hat_center_x = app.globalData.hat_center_x;
-    let hat_center_y = app.globalData.hat_center_y;
+    let hat_center_y = app.globalData.hat_center_y -40;
     let currentHatId = app.globalData.currentHatId;
     const pc = wx.createCanvasContext('myCanvas');
     const windowWidth = wx.getSystemInfoSync().windowWidth;
@@ -41,8 +39,31 @@ Page({
     pc.drawImage(this.bgPic, windowWidth / 2 - 150, 0, 300, 300);
     pc.translate(hat_center_x,hat_center_y);
     pc.rotate(rotate * Math.PI / 180);
-    pc.drawImage("../../image/" + currentHatId + ".png", -hat_size / 2, -hat_size / 2, hat_size, hat_size);
+    pc.drawImage("../../images/" + currentHatId + ".png", -hat_size / 2, -hat_size / 2, hat_size, hat_size);
     pc.draw();
+  },
+  preimage:function(e){
+    const windowWidth = wx.getSystemInfoSync().windowWidth;
+    wx.showLoading({
+      title: '预览中',
+    })
+    wx.canvasToTempFilePath({
+      x: windowWidth / 2 - 150,
+      y: 0,
+      height: 300,
+      width: 300,
+      canvasId: 'myCanvas',
+      success: (res) => {
+        wx.hideLoading()
+        var filePath = res.tempFilePath
+        wx.previewImage({
+          urls: [filePath],
+          current: filePath
+        })
+      },fail:function(e){
+        wx.hideLoading()
+      }
+    });
   },
   savePic() {
     const windowWidth = wx.getSystemInfoSync().windowWidth;
@@ -56,16 +77,30 @@ Page({
         wx.saveImageToPhotosAlbum({
           filePath: res.tempFilePath,
           success: (res) => {
-            wx.navigateTo({
-              url: '../index/index',
-              success: function(res) {},
-              fail: function(res) {},
-              complete: function(res) {},
+            wx.showToast({
+              title: '图片已保存',
             })
             console.log("success:" + res);
-          }, fail(e) {
-            console.log("err:" + e);
-          }
+          }, 
+          fail:
+            function (err) {
+              console.log(err);
+              if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+                console.log("用户一开始拒绝了，我们想再次发起授权")
+                console.log('打开设置窗口')
+                wx.openSetting({
+                  success(settingdata) {
+                    console.log(settingdata)
+                    if (settingdata.authSetting['scope.writePhotosAlbum']) {
+                      console.log('获取权限成功，给出再次点击图片保存到相册的提示。')
+                    }
+                    else {
+                      console.log('获取权限失败，给出不给权限就无法正常使用的提示')
+                    }
+                  }
+                })
+              }
+            }
         })
       }
     });

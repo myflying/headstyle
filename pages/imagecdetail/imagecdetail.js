@@ -7,20 +7,20 @@ var select_index = 0;
 var shareUrl;
 //获取应用实例
 const app = getApp()
-var cid;
+var sid;
 Page({
   data: {
     currentTab: 0,
     is_play: false
   },
   onShareAppMessage: function (res) {
-    if (res.from === 'button') {
+    if (res.from === 'image') {
       // 来自页面内转发按钮
       console.log(res.target)
     }
     console.log("shareUrl--->" + shareUrl)
     return {
-      title: app.globalData.userInfo.nickName + '@你快来换个新头像吧',
+      title:app.globalData.userInfo.nickName + '@你快来换个新头像吧',
       path: '/pages/home/home',
       imageUrl: shareUrl,
       success: function (res) {
@@ -34,18 +34,13 @@ Page({
     }
   },
   onLoad: function (options) {
-
-    console.log(app.globalData.userInfo)
-
     //console.log(options.currentIndex)
     current_index = options.currentIndex
-    cid = options.cid;
-    page = 1
-
-    select_index = 0;
-
+    sid = options.sid;
     if (options.page != null) {
       page = options.page
+    } else {
+      page = 1
     }
 
     list = null;
@@ -61,8 +56,6 @@ Page({
       current_index = current_index - (page - 1) * 50
     }
     
-    console.log('detail -index --->' + current_index)
-
     this.getPreData(Page$this);
   },
 
@@ -70,16 +63,14 @@ Page({
     var Page$this = this;
     var dataParams;
 
-    if (cid != null && cid.length > 0) {
-      console.log('111')
-      dataParams = { 'p': page, 'cid': cid }
+    if (sid != null && sid.length > 0) {
+      dataParams = {'sid': sid }
     } else {
-      console.log('222' + page)
       dataParams = { 'p': page }
     }
 
     wx.request({
-      url: 'https://tx.qqtn.com/apajax.asp?action=0&ctype=0&num=50',
+      url: 'https://tx.qqtn.com/apajax.asp?action=8',
       method: 'GET',
       data: dataParams,
       success: function (res) {
@@ -87,15 +78,15 @@ Page({
         load_success = true
         console.log('success')
         if (list != null) {
-          list = list.concat(res.data.data)
+          list = list.concat(res.data.data[0].list)
         } else {
-          list = res.data.data
+          list = res.data.data[0].list
         }
 
         total_count = list.length
 
         if (list != null && list.length > 0) {
-          list = list.slice(current_index, list.length)
+          list = list.slice(page == 1 ? current_index : 0, list.length)
         }
 
         shareUrl = list[select_index].hurl
@@ -130,7 +121,7 @@ Page({
     if (last_current_index >= total_count - 1 && load_success) {
       page++;
       console.log('load next' + page)
-      current_index = 0;
+
       var Page$this = this;
       wx.showLoading({
         title: '加载中',
@@ -139,20 +130,6 @@ Page({
       
       this.getPreData(Page$this);
     }
-  },
-  preimage:function(e){
-
-    console.log('select_index--->' + select_index)
-
-    var purl = list[select_index].hurl
-
-    if (purl != null && purl.indexOf('https') == -1) {
-      purl = purl.replace('http', 'https');
-    }
-    wx.previewImage({
-      urls: [purl],
-      current: purl
-    })
   },
   imageedit:function(e){
 

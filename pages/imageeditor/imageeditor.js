@@ -22,10 +22,12 @@ Page({
     is_sticker:true
   },
   onLoad(options){
-    console.log(options.url)
-    iurl = options.url
+    //console.log(options.url)
+    //iurl = options.url
+    console.log(app.globalData.bgPic)
+
     this.setData({
-      bgPic: iurl,
+      bgPic: app.globalData.bgPic,
       is_sticker:true
     })
     },
@@ -137,7 +139,7 @@ Page({
     app.globalData.hat_center_y = this.hat_center_y;
     app.globalData.currentHatId = this.data.currentHatId;
     wx.navigateTo({
-      url: '../combine/combine?url=' + iurl,
+      url: '../combine/combine',
     })
   },
   deletesticker:function(e){

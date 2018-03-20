@@ -15,8 +15,28 @@
     </view>
 </view>
 <view class='img-list'>
-  <view class='img-item' wx:for="{{array}}" wx:key="id" wx:for-item="item" bindtap='imagedetail' data-index='{{index}}'>
+  <view class='img-item' style="{{item.fixStyles}}" wx:for="{{array}}" wx:key="id" wx:for-item="item" bindtap='imagedetail' data-index='{{index}}'>
     <image src='{{item.hurl}}' class='item-img' mode='widthFix'></image>
   </view>
   <view class='load_more' wx:if="{{is_load_more}}"><image src='/images/load_more.gif' class='load_more_image'></image></view>
+</view>
+
+<!--弹窗下载APP-->
+<view class="modal-mask" catchtouchmove="preventTouchMove" bindtap='hideModal' wx:if="{{showModal}}"></view>
+<view class="modal-dialog" wx:if="{{showModal}}">
+    <view class='modal-top'>
+      <view class="modal-title">个性头像</view>
+      <view class="modal-content">
+          <view class='model-content-item'><image src='/images/logo.png' class='close-image'></image></view>
+          <view class='model-content-item'><text class='app-name'>个性头像</text></view>
+          <view class='down-tip'>
+            <view class='model-content-item'><text>去应用商店和AppStore搜索</text></view>
+            <view class='model-content-item'><text>"个性头像"</text></view>
+            <view class='model-content-item'><text>下载APP做时尚达人吧</text></view>
+          </view>
+      </view>
+    </view>
+    <view class="modal-footer" bindtap='hideModal'>
+        <image src='/images/close_icon.png' class='close-image'></image>
+    </view>
 </view>

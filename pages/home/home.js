@@ -40,6 +40,26 @@ Page({
       'imageUrl': 'type08.png'
     }]
   },
+  onShareAppMessage: function (res) {
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    console.log("shareUrl--->" + shareUrl)
+    return {
+      title: app.globalData.userInfo.nickName +'@你快来换个新头像吧',
+      path: '/pages/home/home',
+      imageUrl: shareUrl,
+      success: function (res) {
+        // 转发成功
+        console.log('转发成功')
+      },
+      fail: function (res) {
+        // 转发失败
+        console.log('转发失败')
+      }
+    }
+  },
   getHomeData: function (that) {
     page = 1;
     list = null;
@@ -56,6 +76,14 @@ Page({
         list = res.data.data;
         banners = res.data.special;
         
+        if (list.length % 3 > 0) {
+          for (var i = 0; i < list.length; i++) {
+            if (i == list.length - 1) {
+              list[i].fixStyles = 'margin-right : auto; margin-left:5rpx;'
+            }
+          }
+        }
+
         that.setData({
           array: list,
           banner: banners
@@ -79,7 +107,7 @@ Page({
     var Page$this = this;
     this.getHomeData(Page$this);
     wx.setNavigationBarTitle({
-      title: '个性头像'
+      title: '头像达人'
     })
   },
 
@@ -102,6 +130,14 @@ Page({
       success: function (res) {
         list = list.concat(res.data.data);
         console.log(list.length)
+        if (list.length % 3 > 0) {
+          for (var i = 0; i < list.length; i++) {
+            
+            if (i == list.length - 1) {
+              list[i].fixStyles = 'margin-right : auto;margin-left:5rpx;'
+            }
+          }
+        }
         Page$this.setData({
           array: list,
           is_load_more: false
@@ -121,9 +157,9 @@ Page({
     var cindex = e.currentTarget.dataset.index
     //console.log(cids[cindex])
     if (cids[cindex] < 0) {
-      wx.showToast({
-        title: '更多',
-      })
+      this.setData({
+        showModal: true
+      });
       return;
     }
     
@@ -139,7 +175,7 @@ Page({
   },
   imagedetail : function(e){
     var index = e.currentTarget.dataset.index
-    
+    console.log(index)
     var selectPage = 0;
 
     if ((index+1) % 50 == 0){
@@ -151,5 +187,30 @@ Page({
     wx.navigateTo({
       url: '../imagedetail/imagedetail?currentIndex=' + index + '&page=' + parseInt(selectPage)
     })
+  },
+  /**
+     * 弹出框蒙层截断touchmove事件
+     */
+  preventTouchMove: function () { },
+  /**
+   * 隐藏模态对话框
+   */
+  hideModal: function () {
+    console.log("hide");
+    this.setData({
+      showModal: false
+    });
+  },
+  /**
+   * 对话框取消按钮点击事件
+   */
+  onCancel: function () {
+    this.hideModal();
+  },
+  /**
+   * 对话框确认按钮点击事件
+   */
+  onConfirm: function () {
+    this.hideModal();
   }
 })

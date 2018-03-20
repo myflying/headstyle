@@ -2,9 +2,12 @@ page{
   width: 100%;
 }
 .top-view{
-  width: 100%;
+  width: 99%;
   display: flex;
   flex-direction: row;
+  background-color: #f1f1f1;
+  margin: 6rpx;
+  border-radius: 8rpx;
 }
 
 .top-img{
@@ -21,12 +24,12 @@ page{
   align-items: center;
 }
 .title{
-  color: #555555;
+  color: #000;
   font-size: 16px;
   width: 90%;
 }
 .des{
-  color: #cdcdcd;
+  color: #555;
   font-size: 12px;
   margin-top: 16rpx;
   width: 90%;

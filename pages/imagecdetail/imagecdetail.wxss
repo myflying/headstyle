@@ -1,6 +1,5 @@
 page {
   height: 100%;
-  background-color: #f1f1f1;
 }
 .body_view{
   display: flex;
