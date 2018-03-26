@@ -1,14 +1,16 @@
-<view class='top-view'>
-  <image src='{{top_img}}' class='top-img'></image>
-  <view class='banner-remark'>
-    <text class='title'>{{title}}</text>
-    <text class="des">{{des}}</text>
+<scroll-view scroll-y class='collection-all'>
+  <view class='top-view'>
+    <image src='{{top_img}}' class='top-img'></image>
+    <view class='banner-remark'>
+      <text class='title'>{{title}}</text>
+      <text class="des">{{des}}</text>
+    </view>
   </view>
-</view>
 
-<view class='img-list'>
-  <view class='img-item' style="{{item.fixStyles}}" wx:for="{{array}}" wx:key="id" wx:for-item="item" bindtap='imagedetail' data-index='{{index}}'>
-    <image src='{{item.hurl}}' class='item-img' mode='widthFix'></image>
+  <view class='img-list'>
+    <view class='img-item' style="{{item.fixStyles}}" wx:for="{{array}}" wx:key="id" wx:for-item="item" bindtap='imagedetail' data-index='{{index}}'>
+      <image src='{{item.hurl}}' class='item-img' mode='widthFix'></image>
+    </view>
+    <view class='load_more' wx:if="{{is_load_more}}"><image src='/images/load_more.gif' class='load_more_image'></image></view>
   </view>
-  <view class='load_more' wx:if="{{is_load_more}}"><image src='/images/load_more.gif' class='load_more_image'></image></view>
-</view>
+</scroll-view>
