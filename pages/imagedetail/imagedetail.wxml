@@ -6,7 +6,8 @@
   </swiper>
   <view class='bottom_fun'>
     <image src='/images/iv_edit_icon.png' class='fun_btn' bindtap='imageedit'></image>
-    <button class='share_btn' open-type='share'></button>
+    <button class='share_btn' open-type='share'></button> 
     <image src='/images/down_head_icon.png' class='fun_btn' bindtap='downimage'></image>
   </view>
+  <view class='ad'><ad unit-id="adunit-d8ba3ecd0a233d96" class="ad-show"></ad></view>
 </view>

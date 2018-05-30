@@ -1,3 +1,4 @@
+var validate = require('../../utils/validate.js');
 var page = 1;
 var list;
 var total_count = 0;
@@ -20,7 +21,7 @@ Page({
     }
     console.log("shareUrl--->" + shareUrl)
     return {
-      title: app.globalData.userInfo.nickName + '@你快来换个新头像吧',
+      title: '你快来换个新头像吧',
       path: '/pages/home/home',
       imageUrl: shareUrl,
       success: function (res) {
@@ -57,8 +58,8 @@ Page({
       mask: true
     })
 
-    if (page > 1 && current_index >= (page - 1) * 50) {
-      current_index = current_index - (page - 1) * 50
+    if (page > 1 && current_index >= (page - 1) * 48) {
+      current_index = current_index - (page - 1) * 48
     }
     
     console.log('detail -index --->' + current_index)
@@ -70,16 +71,37 @@ Page({
     var Page$this = this;
     var dataParams;
 
+    let times = Date.parse(new Date())
+    let uuid = validate.guid()
+    let md5Temp = validate.md5Sign(times, uuid)
+
+    if (md5Temp.length > 16) {
+      md5Temp = md5Temp.substring(md5Temp.length - 16)
+    }
+
     if (cid != null && cid.length > 0) {
       console.log('111')
-      dataParams = { 'p': page, 'cid': cid }
+      dataParams = {
+         'p': page, 
+         'cid': cid,
+         'num': 48,
+         'timestamp': times,
+         'randstr': uuid,
+         'corestr': md5Temp
+      }
     } else {
       console.log('222' + page)
-      dataParams = { 'p': page }
+      dataParams = { 
+        'p': page,
+        'num': 48,
+        'timestamp': times,
+        'randstr': uuid,
+        'corestr': md5Temp
+      }
     }
 
     wx.request({
-      url: 'https://tx.qqtn.com/apajax.asp?action=0&ctype=0&num=50',
+      url: 'https://ntx.qqtn.com/index/api?action=0',
       method: 'GET',
       data: dataParams,
       success: function (res) {

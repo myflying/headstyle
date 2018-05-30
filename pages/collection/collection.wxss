@@ -38,7 +38,14 @@ page{
   margin-top: 16rpx;
   width: 90%;
 }
-
+.ad{
+  width: 100%;
+  margin-bottom: 2rpx;
+}
+.ad-show{
+  width: 100%;
+  height: 100%;
+}
 .img-list{
   display: flex;
   flex-direction: row;

@@ -49,6 +49,14 @@
   display: flex;
   justify-content: center;
 }
+.ad{
+  width: 100%;
+  margin-bottom: 2rpx;
+}
+.ad-show{
+  width: 100%;
+  height: 100%;
+}
 .item-img{
   width: 246rpx;
   height: 246rpx;

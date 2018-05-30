@@ -1,4 +1,4 @@
-
+var validate = require('../../utils/validate.js');
 var cid
 var page = 1
 var list
@@ -26,12 +26,25 @@ Page({
     page = 1
     list = null;
     var Page$this = this;
+
+    let times = Date.parse(new Date())
+    let uuid = validate.guid()
+    let md5Temp = validate.md5Sign(times, uuid)
+
+    if (md5Temp.length > 16) {
+      md5Temp = md5Temp.substring(md5Temp.length - 16)
+    }
+
     wx.request({
-      url: 'https://tx.qqtn.com/apajax.asp?action=0&ctype=0&num=50',
+      url: 'https://ntx.qqtn.com/index/api?action=0',
       method: 'GET',
       data: {
         'p': page,
-        'cid':cid
+        'cid':cid,
+        'num': 48,
+        'timestamp': times,
+        'randstr': uuid,
+        'corestr': md5Temp
       },
       success: function (res) {
         wx.hideLoading()
@@ -64,13 +77,23 @@ Page({
 
     var Page$this = this;
     page++;
+    let times = Date.parse(new Date())
+    let uuid = validate.guid()
+    let md5Temp = validate.md5Sign(times, uuid)
 
+    if (md5Temp.length > 16) {
+      md5Temp = md5Temp.substring(md5Temp.length - 16)
+    }
     wx.request({
-      url: 'https://tx.qqtn.com/apajax.asp?action=0&ctype=0&num=50',
+      url: 'https://ntx.qqtn.com/index/api?action=0',
       method: 'GET',
       data: {
         'p': page,
-        'cid': cid
+        'cid': cid,
+        'num': 48,
+        'timestamp': times,
+        'randstr': uuid,
+        'corestr': md5Temp
       },
       success: function (res) {
         wx.hideLoading()
@@ -105,10 +128,10 @@ Page({
 
     var selectPage = 0;
 
-    if ((index + 1) % 50 == 0) {
-      selectPage = (index + 1) / 50;
+    if ((index + 1) % 48 == 0) {
+      selectPage = (index + 1) / 48;
     } else {
-      selectPage = ((index + 1) / 50) + 1
+      selectPage = ((index + 1) / 48) + 1
     }
 
     wx.navigateTo({

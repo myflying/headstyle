@@ -1,3 +1,4 @@
+var validate = require('../../utils/validate.js');
 const app = getApp();
 var dotsFirst = true;
 var list;
@@ -47,7 +48,7 @@ Page({
     }
     console.log("shareUrl--->" + shareUrl)
     return {
-      title: app.globalData.userInfo.nickName +'@你快来换个新头像吧',
+      title: '你快来换个新头像吧',
       path: '/pages/home/home',
       imageUrl: shareUrl,
       success: function (res) {
@@ -60,24 +61,39 @@ Page({
       }
     }
   },
+
   getHomeData: function (that) {
     page = 1;
     list = null;
     var Page$this = this;
+
+    let times = Date.parse(new Date())
+    let uuid = validate.guid()
+    let md5Temp = validate.md5Sign(times, uuid)
+    
+    if(md5Temp.length > 16){
+      md5Temp = md5Temp.substring(md5Temp.length - 16)
+    }
+    
     wx.request({
-      url: 'https://tx.qqtn.com/apajax.asp?action=0&ctype=0&num=10',
+      url: 'https://ntx.qqtn.com/index/api?action=0',
       method: 'GET',
       data: {
-        'p': page
+        'p': page,
+        'num':48,
+        'timestamp': times,
+        'randstr': uuid,
+        'corestr': md5Temp
       },
       success: function (res) {
+        console.log(res.data)
         wx.hideLoading()
         wx.stopPullDownRefresh();
         list = res.data.data;
         banners = res.data.special;
         
         if (list.length % 3 > 0) {
-          for (var i = 0; i < list.length; i++) {
+          for (let i = 0; i < list.length; i++) {
             if (i == list.length - 1) {
               list[i].fixStyles = 'margin-right : auto; margin-left:5rpx;'
             }
@@ -121,11 +137,23 @@ Page({
     var Page$this = this;
     page++;
 
+    let times = Date.parse(new Date())
+    let uuid = validate.guid()
+    let md5Temp = validate.md5Sign(times, uuid)
+
+    if (md5Temp.length > 16) {
+      md5Temp = md5Temp.substring(md5Temp.length - 16)
+    }
+
     wx.request({
-      url: 'https://tx.qqtn.com/apajax.asp?action=0&ctype=0&num=50',
+      url: 'https://ntx.qqtn.com/index/api?action=0',
       method: 'GET',
       data: {
-        'p': page
+        'p': page,
+        'num': 48,
+        'timestamp': times,
+        'randstr': uuid,
+        'corestr': md5Temp
       },
       success: function (res) {
         list = list.concat(res.data.data);
@@ -178,12 +206,12 @@ Page({
     console.log(index)
     var selectPage = 0;
 
-    if ((index+1) % 50 == 0){
-      selectPage = (index + 1) / 50;
+    if ((index+1) % 48 == 0){
+      selectPage = (index + 1) / 48;
     }else{
-      selectPage = ((index + 1) / 50) + 1
+      selectPage = ((index + 1) / 48) + 1
     }
-
+    console.log('selpage--->' + selectPage)
     wx.navigateTo({
       url: '../imagedetail/imagedetail?currentIndex=' + index + '&page=' + parseInt(selectPage)
     })
