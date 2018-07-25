@@ -183,8 +183,7 @@ Page({
     //文件下载
     wx.downloadFile({
       url: downUrl,
-      success:
-      function (res) {
+      success:function (res) {
         console.log(res);
         //图片保存到本地
         wx.saveImageToPhotosAlbum({
@@ -216,6 +215,9 @@ Page({
             }
           }
         })
+      },
+      fail:function(res){
+          console.log(res)
       }
     })
   },
