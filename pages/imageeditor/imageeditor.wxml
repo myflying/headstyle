@@ -1,13 +1,21 @@
-<!--index.wxml-->
-<view wx:if="{{!combine}}">
+
+<import src='/pages/common/common_bar.wxml' />
+
+<!--引用自定义导航栏模板-->
+<template is="bar" data='{{statusBarHeight:statusBarHeight,titleBarHeight:titleBarHeight,left_type:1,title_txt:"头像达人"}}' />
+
+<view wx:if="{{!combine}}" style='padding-top:{{statusBarHeight + titleBarHeight}}px;' >
   <view class="container_edit" id="container" bind:touchstart="touchStart" bind:touchend="touchEnd" bind:touchmove="touchMove">
     <image class="bg" src="{{bgPic}}" mode='widthFix'></image>
     <image wx:if="{{is_sticker}}" class="cancel" id="cancel" src="../../images/delete_icon.png" bindtap='deletesticker' style="top:{{cancelCenterY-12+'px'}};left:{{cancelCenterX-12+'px'}}"></image>
     <image wx:if="{{is_sticker}}"  class="handle" id="handle" src="../../images/move_icon.png" color="green" style="top:{{handleCenterY-10+'px'}};left:{{handleCenterX-10+'px'}}"></image>
-    <image wx:if="{{is_sticker}}" class="hat" id='hat' src="../../images/{{currentHatId}}.png" style="top:{{hatCenterY-hatSize/2-2+'px'}};left:{{hatCenterX-hatSize/2-2+'px'}};transform:rotate({{rotate+'deg'}}) scale({{scale}})"></image>
+    <image wx:if="{{is_sticker}}" class="hat" id='hat' src="{{current_hat_img}}" style="top:{{hatCenterY-hatSize/2-2+'px'}};left:{{hatCenterX-hatSize/2-2+'px'}};transform:rotate({{rotate+'deg'}}) scale({{scale}})"></image>
   </view>
 </view>
-<scroll-view class="scrollView" scroll-x="true">
-  <image class="imgList" wx:for="...imgList" wx:key="{{index+1}}" src="../../images/{{index+1}}.png" data-hat-id="{{index+1}}" bind:tap="chooseImg"></image>
-</scroll-view>
-<button bind:tap="combinePic" class='confirm_create'>确定</button>
+
+<view class='bottom-view'>
+  <scroll-view class="scrollView" scroll-x>
+    <image class="imgList" wx:for="{{pendantlist}}" wx:key="{{index}}" wx:item='{{item}}' src="{{item.ico}}" data-hat-id="{{index}}" bind:tap="chooseImg"></image>
+  </scroll-view>
+  <view class='create-view'><text bind:tap="combinePic" class='confirm_create'>完  成</text></view>
+</view>

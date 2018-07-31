@@ -1,17 +1,25 @@
 {
-  "pages":[
-    "pages/home/home",
-    "pages/category/category",
-    "pages/collection/collection",
-    "pages/imagedetail/imagedetail",
-    "pages/imagecdetail/imagecdetail",
+  "pages": [
+    "pages/index/index",
     "pages/imageeditor/imageeditor",
+    "pages/imagedetail/imagedetail",
+    "pages/searchdetail/searchdetail",
+    "pages/category/category",
+    "pages/search/search",
+    "pages/searchList/searchList",
+    "pages/mykeeplist/mykeeplist",
+    "pages/keepdetail/keepdetail",
+    "pages/home/home",
+    "pages/collection/collection",
+    "pages/imagecdetail/imagecdetail",
     "pages/combine/combine"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#ff5555",
     "navigationBarTitleText": "头像达人",
-    "navigationBarTextStyle":"white"
+    "navigationBarTextStyle": "white",
+    "onReachBottomDistance": 50
   }
 }

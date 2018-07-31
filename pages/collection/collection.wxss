@@ -1,11 +1,14 @@
-page{
+@import "/pages/common/common_bar.wxss";
+
+page {
   width: 100%;
+}
+
+.collection-all {
   height: 100%;
 }
-.collection-all{
-  height: 100%;
-}
-.top-view{
+
+.top-view {
   width: 99%;
   display: flex;
   flex-direction: row;
@@ -14,12 +17,13 @@ page{
   border-radius: 8rpx;
 }
 
-.top-img{
+.top-img {
   width: 280rpx;
   height: 280rpx;
   margin: 10rpx;
 }
-.banner-remark{
+
+.banner-remark {
   width: 50%;
   height: 280rpx;
   display: flex;
@@ -27,54 +31,124 @@ page{
   justify-content: center;
   align-items: center;
 }
-.title{
+
+.title {
   color: #000;
   font-size: 16px;
   width: 90%;
 }
-.des{
+
+.des {
   color: #555;
   font-size: 12px;
   margin-top: 16rpx;
   width: 90%;
 }
-.ad{
+
+.ad {
   width: 100%;
   margin-bottom: 2rpx;
 }
-.ad-show{
+
+.ad-show {
   width: 100%;
   height: 100%;
 }
-.img-list{
+
+.img-list {
   display: flex;
   flex-direction: row;
-  width: 99%;
-  overflow: hidden;
+  width: 730rpx;
   flex-wrap: wrap;
-  margin-left: 0.5%;
-  margin-top: 5rpx;
+  margin-left: 12rpx;
+  margin-bottom: 100rpx;
   justify-content: space-around;
 }
-.img-item{
-  width: 33%;
-  height: 248rpx;
+
+.img-item {
+  width: 230rpx;
+  height: 230rpx;
+  margin-top: 20rpx;
   display: flex;
   justify-content: center;
 }
-.item-img{
-  width: 246rpx;
-  height: 246rpx;
+
+.item-img {
+  width: 230rpx;
+  height: 230rpx;
+  border-radius: 5px;
 }
-.load_more{
+
+.load_more {
   width: 100%;
   display: flex;
   justify-content: center;
   margin: 10rpx;
 }
-.load_more_image{
+
+.load_more_image {
   width: 46rpx;
   height: 46rpx;
   display: flex;
   justify-content: center;
+}
+
+
+.bottom-tab {
+  width: 100%;
+  text-align: center;
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.bottom-tab-item {
+  width: 250rpx;
+  height: 100rpx;
+  color: #434343;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-img {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.category-txt {
+  font-size: 10pt;
+  height: 30rpx;
+  margin-top: 4rpx;
+}
+
+.bottom-share-item {
+  width: 250rpx;
+  height: 100rpx;
+  color: #434343;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.share-btn {
+  width: 100%;
+  height: 100rpx;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0)
+}
+.share-btn::after{
+  border: 0;
 }

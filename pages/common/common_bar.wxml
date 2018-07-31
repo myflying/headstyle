@@ -1,0 +1,54 @@
+<template name="bar">
+  <view class="header">
+    <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+    <view class="title-bar" style="height:{{titleBarHeight}}px">
+
+      <block wx:if='{{left_type < 2}}'>
+
+        <block wx:if='{{left_type == 0}}'>
+            <view class='share-view'>
+                <image class='home-share' src='../../images/home_share_icon.png'></image>
+                <button class='share-btn' open-type='share'></button>
+            </view>
+        </block>
+        <block wx:if='{{left_type == 1}}'>
+            <view class='back-view'>
+              <image class='back-img' src='../../images/bar_back.png' bindtap='backPage'></image>
+            </view>
+        </block>
+
+        <block wx:if='{{!title_txt}}'>
+          
+          <block wx:if='{{left_type == 0}}'>
+              <view class='search-home-view' bindtap='toSearch'>
+              <image class='search-img' src='../../images/search_img.png'></image>
+              <input type='text' disabled='true' class='search-home-txt' placeholder='搜索头像' confirm-type='search' maxlength='8' placeholder-class='search-holder-txt' bindinput='keywordInput' bindconfirm='search'></input>
+            </view>
+          </block>
+          <block wx:if='{{left_type == 1}}'>
+              <view class='search-view'>
+              <image class='search-list-img' src='../../images/search_img.png'></image>
+              <input type='text' class='search-txt' value='{{is_input}}' placeholder='搜索你想要的头像' confirm-type='search' maxlength='8' placeholder-class='search-holder-txt' bindinput='keywordInput' bindconfirm='search'></input>
+              <image class='clear-img' src='{{is_input ? "../../images/clear_img.png":""}}' bindtap='clear'></image>
+            </view>
+          </block>
+        </block>
+        <block wx:if='{{title_txt}}'>
+          <view class='title-view'>
+            <text class='title-txt'>{{title_txt}}</text>
+          </view>
+        </block>
+
+      </block>
+
+      <block wx:if='{{left_type == 3}}'>
+        <view class='back-view'>
+              <image class='back-img' src='../../images/bar_back.png' bindtap='backPage'></image>
+        </view>
+        <view class='only-title-view'>
+            <text class='only-title-txt'>{{title_txt}}</text>
+          </view>
+      </block>
+    </view>
+  </view>
+</template>

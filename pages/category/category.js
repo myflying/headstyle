@@ -1,16 +1,17 @@
 var validate = require('../../utils/validate.js');
+var app = getApp()
 var cid
 var page = 1
 var list
 var typeName
 Page({
-  data:{
+  data: {
     is_load_more: false
   },
-  onLoad:function(e){
-    console.log(e.cid)
-    cid = e.cid
-    typeName = e.typeName
+  onLoad: function(options) {
+    //console.log(e.cid)
+    cid = options.cid
+    typeName = options.typeName
 
     wx.showLoading({
       title: '加载中',
@@ -21,8 +22,17 @@ Page({
     wx.setNavigationBarTitle({
       title: typeName
     })
+
+    app.categoryPage = this
   },
-  getData: function (that) {
+  onReady() {
+    this.setData({
+      statusBarHeight: getApp().globalData.statusBarHeight,
+      titleBarHeight: getApp().globalData.titleBarHeight,
+      title_txt: typeName
+    })
+  },
+  getData: function(that) {
     page = 1
     list = null;
     var Page$this = this;
@@ -40,17 +50,18 @@ Page({
       method: 'GET',
       data: {
         'p': page,
-        'cid':cid,
+        'cid': cid,
         'num': 48,
         'timestamp': times,
         'randstr': uuid,
-        'corestr': md5Temp
+        'corestr': md5Temp,
+        'is_login': wx.getStorageSync('user_info') ? 1:0
       },
-      success: function (res) {
+      success: function(res) {
         wx.hideLoading()
         wx.stopPullDownRefresh();
         list = res.data.data;
-       
+
         if (list.length % 3 > 0) {
           for (var i = 0; i < list.length; i++) {
             if (i == list.length - 1) {
@@ -63,17 +74,22 @@ Page({
           array: list,
         });
       },
-      fail: function (res) {
+      fail: function(res) {
         wx.hideLoading()
         wx.stopPullDownRefresh()
       }
     })
   },
-  onPullDownRefresh: function () {
+  
+  backPage: function (e) {
+    wx.navigateBack()
+  },
+
+  onPullDownRefresh: function() {
     var Page$this = this;
     this.getData(Page$this);
   },
-  onReachBottom: function () {
+  onReachBottom: function() {
 
     var Page$this = this;
     page++;
@@ -95,7 +111,7 @@ Page({
         'randstr': uuid,
         'corestr': md5Temp
       },
-      success: function (res) {
+      success: function(res) {
         wx.hideLoading()
         list = list.concat(res.data.data);
         console.log(list.length)
@@ -112,7 +128,7 @@ Page({
           is_load_more: false
         });
       },
-      fail: function (res) {
+      fail: function(res) {
         wx.hideLoading()
         Page$this.setData({
           is_load_more: false
@@ -123,10 +139,20 @@ Page({
       is_load_more: true
     })
   },
-  imagedetail: function (e) {
+  refreshData(status){
+    this.data.array[this.currentIndex].is_keep = status
+    console.log(this.data.array[this.currentIndex])
+     this.setData({
+       array: this.data.array
+     })
+  },
+  imagedetail: function(e) {
     var index = e.currentTarget.dataset.index
+    var is_keep = e.currentTarget.dataset.keep
+    var share_title = e.currentTarget.dataset.sharetitle
+    var selectPage = 0
 
-    var selectPage = 0;
+    this.currentIndex = index
 
     if ((index + 1) % 48 == 0) {
       selectPage = (index + 1) / 48;
@@ -135,7 +161,32 @@ Page({
     }
 
     wx.navigateTo({
-      url: '../imagedetail/imagedetail?currentIndex=' + index + '&page=' + parseInt(selectPage) + '&cid='+cid
+      url: '../imagedetail/imagedetail?currentIndex=' + index + '&page=' + parseInt(selectPage) + '&cid=' + cid + '&is_keep=' + is_keep + '&share_title=' + share_title
     })
-  }
+  },
+
+  toHome:function(e){
+    wx.redirectTo({
+      url: '/pages/index/index',
+    })
+  },
+
+  toTop:function(e){
+    wx.pageScrollTo({
+      scrollTop: 0,
+      duration: 300
+    })
+  },
+  
+  onShareAppMessage: function (res) {
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: app.globalData.appShareName ? app.globalData.appShareName : "@你快来换个新头像吧",
+      path: '/pages/index/index',
+      imageUrl: app.globalData.appShareIco ? app.globalData.appShareIco : "/images/share_def.png"
+    }
+  },
 })

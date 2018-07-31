@@ -1,0 +1,63 @@
+@import "/pages/common/common_bar.wxss";
+page {
+  width: 100%;
+  height: 100%;
+}
+
+.img-list {
+  display: flex;
+  flex-direction: row;
+  width: 730rpx;
+  overflow: hidden;
+  flex-wrap: wrap;
+  margin-left: 12rpx;
+  justify-content: space-around;
+}
+
+.img-item {
+  width: 230rpx;
+  height: 230rpx;
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.ad {
+  width: 100%;
+  margin-top: 12rpx;
+}
+
+.ad-show {
+  width: 100%;
+  height: 100%;
+}
+
+.item-img {
+  width: 230rpx;
+  height: 230rpx;
+  border-radius: 5px;
+}
+
+.load_more {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 10rpx;
+}
+
+.load_more_image {
+  width: 46rpx;
+  height: 46rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.no-data-txt {
+  color: #333;
+  font-size: 30rpx;
+  width: 300rpx;
+  position: absolute;
+  left: 225rpx;
+  top: 300rpx;
+  text-align: center;
+}

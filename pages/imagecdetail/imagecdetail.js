@@ -1,4 +1,5 @@
 var validate = require('../../utils/validate.js');
+const common = require('../../utils/common.js')
 var page = 1;
 var list;
 var total_count = 0;
@@ -6,36 +7,52 @@ var load_success = true;
 var current_index = 0;
 var select_index = 0;
 var shareUrl;
+var shareTitle;
 //获取应用实例
 const app = getApp()
 var sid;
+var img_id
+var keep_img = '../../images/keep_normal.png'
 Page({
   data: {
     currentTab: 0,
-    is_play: false
+    is_play: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    is_login: false
   },
   onShareAppMessage: function (res) {
-    if (res.from === 'image') {
+    if (res.from === 'button') {
       // 来自页面内转发按钮
       console.log(res.target)
     }
-    console.log("shareUrl--->" + shareUrl)
     return {
-      title:'你快来换个新头像吧',
-      path: '/pages/home/home',
-      imageUrl: shareUrl,
-      success: function (res) {
-        // 转发成功
-        console.log('转发成功')
-      },
-      fail: function (res) {
-        // 转发失败
-        console.log('转发失败')
-      }
+      title: shareTitle || "@你快来换个新头像吧",
+      path: '/pages/index/index',
+      imageUrl: shareUrl
     }
   },
   onLoad: function (options) {
-    //console.log(options.currentIndex)
+
+    var that = this
+    wx.getStorage({
+      key: 'user_info',
+      success: function (res) {
+        that.setData({
+          is_login: true
+        })
+      },
+    })
+
+    shareTitle = options.share_title
+
+    if (options.is_keep == 1) {
+      keep_img = '../../images/is_keeped.png'
+    }
+
+    this.setData({
+      is_add_keep_img: keep_img
+    })
+    
     current_index = options.currentIndex
     sid = options.sid;
     if (options.page != null) {
@@ -59,7 +76,12 @@ Page({
     
     this.getPreData(Page$this);
   },
-
+  onReady() {
+    this.setData({
+      statusBarHeight: getApp().globalData.statusBarHeight,
+      titleBarHeight: getApp().globalData.titleBarHeight
+    })
+  },
   getPreData: function (that) {
     var Page$this = this;
     var dataParams;
@@ -79,15 +101,18 @@ Page({
         'num': 1000,
         'timestamp': times,
         'randstr': uuid,
-        'corestr': md5Temp
+        'corestr': md5Temp,
+        'is_login': wx.getStorageSync('user_info') ? 1 : 0
         }
     } else {
-      dataParams = { 
+      dataParams = {
         'p': page,
         'num': 1000,
         'timestamp': times,
         'randstr': uuid,
-        'corestr': md5Temp }
+        'corestr': md5Temp,
+        'is_login': wx.getStorageSync('user_info') ? 1 : 0
+      }
     }
 
     wx.request({
@@ -111,7 +136,7 @@ Page({
         }
 
         shareUrl = list[select_index].hurl
-        
+        img_id = list[select_index].cid
         that.setData({
           images: list
         });
@@ -138,6 +163,17 @@ Page({
     console.log('bindchange url'+list[select_index].hurl)
     
     shareUrl = list[select_index].hurl
+    img_id = list[select_index].cid
+
+    if (list[select_index].is_keep == 1) {
+      keep_img = '../../images/is_keeped.png'
+    } else {
+      keep_img = '../../images/keep_normal.png'
+    }
+
+    this.setData({
+      is_add_keep_img: keep_img
+    })
 
     if (last_current_index >= total_count - 1 && load_success) {
       page++;
@@ -171,6 +207,12 @@ Page({
       }
     })
   },
+
+  onGotUserInfo: function (e) {
+    var that = this
+    app.onGotUserInfo(that)
+  },
+
   downimage: function (e) {
 
     var downUrl = list[select_index].hurl
@@ -221,4 +263,58 @@ Page({
       }
     })
   },
+  backPage: function (e) {
+    wx.navigateBack()
+  },
+  toHome: function (e) {
+    wx.redirectTo({
+      url: '/pages/index/index',
+    })
+  },
+  addKeep: function (e) {
+    var that = this
+    let url = "https://ntx.qqtn.com/api/my/setKeepInfo"
+    var rdata = {
+      'img_id': img_id
+    }
+    let header = common.gethead(rdata)
+    wx.request({
+      url: url,
+      data: rdata,
+      method: 'POST',
+      header: header,
+      success: function (res) {
+        console.log(res.data.code)
+        if (res.data) {
+          if (res.data.code == 1) {
+            if (app.collectionPage) {
+              console.log('collectionPage---->')
+              app.collectionPage.refreshData(1)
+            }
+            wx.showToast({
+              title: '收藏成功',
+            })
+            that.setData({
+              is_add_keep_img: '../../images/is_keeped.png'
+            })
+          } else if (res.data.code == 2) {
+            if (app.collectionPage) {
+              console.log('collectionPage---->')
+              app.collectionPage.refreshData(0)
+            }
+            wx.showToast({
+              title: res.data.msg,
+            })
+            that.setData({
+              is_add_keep_img: '../../images/keep_normal.png'
+            })
+          } else {
+            wx.showToast({
+              title: '操作失败',
+            })
+          }
+        }
+      }
+    })
+  }
 })

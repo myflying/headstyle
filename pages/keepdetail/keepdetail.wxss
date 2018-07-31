@@ -1,0 +1,147 @@
+@import "/pages/common/common_bar.wxss";
+
+page {
+  height: 100%;
+  background-color: #f1f1f1;
+}
+
+.body_view {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.wx-swiper {
+  height: 60%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wx-swiper-item {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.wx-image {
+  width: 400rpx;
+  height: 400rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10rpx;
+  border: 8px solid white;
+}
+
+.ad {
+  width: 100%;
+  position: absolute;
+  top: 75%;
+}
+
+.ad-show {
+  width: 100%;
+  height: 100%;
+}
+
+.bottom-content {
+  width: 100%;
+  height: 150rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: #f1f1f1;
+}
+
+.bottom-tab {
+  width: 100%;
+  text-align: center;
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background: #fff;
+}
+
+.bottom-tab-item {
+  width: 150rpx;
+  height: 100rpx;
+  color: #434343;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-img {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.category-txt {
+  font-size: 10pt;
+  height: 30rpx;
+  margin-top: 4rpx;
+}
+
+.bottom-share-item {
+  width: 150rpx;
+  height: 100rpx;
+  color: #434343;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.share-btn {
+  width: 100%;
+  height: 100rpx;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0);
+}
+
+.share-btn::after {
+  border: 0;
+}
+
+.beau-item {
+  width: 150rpx;
+  height: 150rpx;
+  color: #434343;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 301rpx;
+  z-index: 100;
+}
+
+.beautify-img {
+  width: 86rpx;
+  height: 86rpx;
+}
+
+.beau-txt {
+  font-size: 10pt;
+  height: 30rpx;
+  margin-top: 4rpx;
+  color: #ff5555;
+}

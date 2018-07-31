@@ -1,17 +1,24 @@
 // pages/combine/combine.js
-const app=getApp();
+const app = getApp();
+var currentHatId
+var currentHatImg
 Page({
 
   data: {
-  
+
   },
 
-  onLoad: function (options) {
+  onLoad: function(options) {
+    currentHatId = options.hindex;
+
+    currentHatImg = app.globalData.hatImgPath
+    console.log(currentHatImg)
+    var that = this
     wx.getImageInfo({
       src: app.globalData.bgPic,
       success: res => {
-        this.bgPic = res.path
-        this.draw();
+        that.bgPic = res.path
+        that.draw();
       }
     })
   },
@@ -19,30 +26,33 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
-  
+  onReady: function() {
+    this.setData({
+      statusBarHeight: getApp().globalData.statusBarHeight,
+      titleBarHeight: getApp().globalData.titleBarHeight
+    })
   },
-
-  
+  backPage: function(e) {
+    wx.navigateBack()
+  },
   draw() {
     let scale = app.globalData.scale;
     let rotate = app.globalData.rotate;
     let hat_center_x = app.globalData.hat_center_x;
-    let hat_center_y = app.globalData.hat_center_y -40;
+    let hat_center_y = app.globalData.hat_center_y - 40;
     let currentHatId = app.globalData.currentHatId;
     const pc = wx.createCanvasContext('myCanvas');
     const windowWidth = wx.getSystemInfoSync().windowWidth;
     const hat_size = 100 * scale;
 
-
     pc.clearRect(0, 0, windowWidth, 300);
     pc.drawImage(this.bgPic, windowWidth / 2 - 150, 0, 300, 300);
-    pc.translate(hat_center_x,hat_center_y);
+    pc.translate(hat_center_x, hat_center_y);
     pc.rotate(rotate * Math.PI / 180);
-    pc.drawImage("../../images/" + currentHatId + ".png", -hat_size / 2, -hat_size / 2, hat_size, hat_size);
+    pc.drawImage(currentHatImg, -hat_size / 2, -hat_size / 2, hat_size, hat_size);
     pc.draw();
   },
-  preimage:function(e){
+  preimage: function(e) {
     const windowWidth = wx.getSystemInfoSync().windowWidth;
     wx.showLoading({
       title: '预览中',
@@ -60,7 +70,8 @@ Page({
           urls: [filePath],
           current: filePath
         })
-      },fail:function(e){
+      },
+      fail: function(e) {
         wx.hideLoading()
       }
     });
@@ -81,26 +92,24 @@ Page({
               title: '图片已保存',
             })
             console.log("success:" + res);
-          }, 
-          fail:
-            function (err) {
-              console.log(err);
-              if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
-                console.log("用户一开始拒绝了，我们想再次发起授权")
-                console.log('打开设置窗口')
-                wx.openSetting({
-                  success(settingdata) {
-                    console.log(settingdata)
-                    if (settingdata.authSetting['scope.writePhotosAlbum']) {
-                      console.log('获取权限成功，给出再次点击图片保存到相册的提示。')
-                    }
-                    else {
-                      console.log('获取权限失败，给出不给权限就无法正常使用的提示')
-                    }
+          },
+          fail: function(err) {
+            console.log(err);
+            if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+              console.log("用户一开始拒绝了，我们想再次发起授权")
+              console.log('打开设置窗口')
+              wx.openSetting({
+                success(settingdata) {
+                  console.log(settingdata)
+                  if (settingdata.authSetting['scope.writePhotosAlbum']) {
+                    console.log('获取权限成功，给出再次点击图片保存到相册的提示。')
+                  } else {
+                    console.log('获取权限失败，给出不给权限就无法正常使用的提示')
                   }
-                })
-              }
+                }
+              })
             }
+          }
         })
       }
     });

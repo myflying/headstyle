@@ -1,36 +1,71 @@
-//index.js
+var validate = require('../../utils/validate.js');
 //获取应用实例
 const app = getApp()
 var iurl;
+var total_bar_height
+var imgList
+var currentHatImgurl
 Page({
   data: {
     bgPic:null,
-    imgList:[1,2,3,4,5,6,7,8,9,10],
     currentHatId:1,
 
     hatCenterX:wx.getSystemInfoSync().windowWidth/2,
-    hatCenterY:150,
+    hatCenterY: 150 + getApp().globalData.statusBarHeight + getApp().globalData.titleBarHeight,
     cancelCenterX:wx.getSystemInfoSync().windowWidth/2-50-2,
-    cancelCenterY:100,
+    cancelCenterY: 100 + getApp().globalData.statusBarHeight + getApp().globalData.titleBarHeight,
     handleCenterX:wx.getSystemInfoSync().windowWidth/2+50-2,
-    handleCenterY:200,
+    handleCenterY: 200 + getApp().globalData.statusBarHeight + getApp().globalData.titleBarHeight,
 
     hatSize:100,
 
     scale:1,
     rotate:0,
-    is_sticker:true
+    is_sticker:true,
   },
   onLoad(options){
     //console.log(options.url)
     //iurl = options.url
     console.log(app.globalData.bgPic)
-
+    //app.globalData.bgPic = 'http://ntx.qqtn.com/up/xcx/2018-07-27/5b5a7bbd7bf375.79041377.png'
     this.setData({
       bgPic: app.globalData.bgPic,
       is_sticker:true
     })
-    },
+    total_bar_height = getApp().globalData.statusBarHeight + getApp().globalData.titleBarHeight
+
+
+    var that = this;
+    let times = Date.parse(new Date())
+    let uuid = validate.guid()
+    let md5Temp = validate.md5Sign(times, uuid)
+
+    if (md5Temp.length > 16) {
+      md5Temp = md5Temp.substring(md5Temp.length - 16)
+    }
+
+    wx.request({
+      url: 'https://ntx.qqtn.com/api/my/decorateList',
+      method: 'GET',
+      data: {},
+      success: function (res) {
+        console.log(res.data.data)
+        imgList = res.data.data
+        app.globalData.imglist = imgList,
+        that.setData({
+          pendantlist: imgList,
+          current_hat_img: imgList[0].ico
+        })
+
+        wx.getImageInfo({
+          src: imgList[0].ico,
+          success: function (res) {
+            app.globalData.hatImgPath = res.path
+          }
+        })
+      }
+    })
+  },
   
   onReady(){
     this.hat_center_x=this.data.hatCenterX;
@@ -46,6 +81,12 @@ Page({
     this.touch_target="";
     this.start_x=0;
     this.start_y=0;
+   
+    this.setData({
+      statusBarHeight: getApp().globalData.statusBarHeight,
+      titleBarHeight: getApp().globalData.titleBarHeight
+    })
+    
   },
   touchStart(e){
     if(e.target.id=="hat"){
@@ -88,7 +129,7 @@ Page({
         var tempX = (parseInt(this.data.cancelCenterX) + parseInt(moved_x))
         var tempY = (parseInt(this.data.cancelCenterY) + parseInt(moved_y))
         console.log(tempX)
-        if(tempX < 30 || tempX > 227 || tempY < 30 || tempY > 227){
+        if (tempX < 40 || tempX > 270 || tempY < (30 + total_bar_height) || tempY > (227 + total_bar_height)){
           return;
         }
         this.setData({
@@ -124,22 +165,35 @@ Page({
       this.start_y=current_y;
   },
   
-
+  backPage: function (e) {
+    wx.navigateBack()
+  },
+  
   chooseImg(e){
     console.log(e);
+    var hindex = e.target.dataset.hatId
+    this.data.currentHatId = hindex
     this.setData({
       is_sticker:true,
-      currentHatId:e.target.dataset.hatId
+      current_hat_img:imgList[hindex].ico
     })
+    currentHatImgurl = this.data.current_hat_img
+    wx.getImageInfo({
+      src: currentHatImgurl,
+      success: function (res) {
+        app.globalData.hatImgPath = res.path
+      }
+    })
+
   },
   combinePic(){
     app.globalData.scale=this.scale;
     app.globalData.rotate = this.rotate;
     app.globalData.hat_center_x = this.hat_center_x;
-    app.globalData.hat_center_y = this.hat_center_y;
+    app.globalData.hat_center_y = this.hat_center_y - total_bar_height;
     app.globalData.currentHatId = this.data.currentHatId;
     wx.navigateTo({
-      url: '../combine/combine',
+      url: '../combine/combine?hindex=' + this.data.currentHatId,
     })
   },
   deletesticker:function(e){
