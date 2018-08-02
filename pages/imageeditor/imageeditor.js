@@ -5,6 +5,7 @@ var iurl;
 var total_bar_height
 var imgList
 var currentHatImgurl
+var bgPicPath
 Page({
   data: {
     bgPic:null,
@@ -26,10 +27,14 @@ Page({
   onLoad(options){
     //console.log(options.url)
     //iurl = options.url
-    console.log(app.globalData.bgPic)
+    console.log(options.bigImgPath)
+    bgPicPath = options.bigImgPath
     //app.globalData.bgPic = 'http://ntx.qqtn.com/up/xcx/2018-07-27/5b5a7bbd7bf375.79041377.png'
+    // wx.showToast({
+    //   title: bgPicPath,
+    // })
     this.setData({
-      bgPic: app.globalData.bgPic,
+      bgPic: bgPicPath,
       is_sticker:true
     })
     total_bar_height = getApp().globalData.statusBarHeight + getApp().globalData.titleBarHeight
@@ -177,14 +182,24 @@ Page({
       is_sticker:true,
       current_hat_img:imgList[hindex].ico
     })
+
     currentHatImgurl = this.data.current_hat_img
+    
+    if (currentHatImgurl != null && currentHatImgurl.indexOf('https') == -1) {
+      currentHatImgurl = currentHatImgurl.replace('http', 'https');
+    }
+
+    // wx.showToast({
+    //   title: currentHatImgurl,
+    // })
+    var that = this
     wx.getImageInfo({
       src: currentHatImgurl,
       success: function (res) {
-        app.globalData.hatImgPath = res.path
+        app.globalData.hatImgPath = res.path  
       }
     })
-
+    
   },
   combinePic(){
     app.globalData.scale=this.scale;
@@ -193,7 +208,7 @@ Page({
     app.globalData.hat_center_y = this.hat_center_y - total_bar_height;
     app.globalData.currentHatId = this.data.currentHatId;
     wx.navigateTo({
-      url: '../combine/combine?hindex=' + this.data.currentHatId,
+      url: '../combine/combine?hindex=' + this.data.currentHatId + '&bigPic=' + bgPicPath
     })
   },
   deletesticker:function(e){

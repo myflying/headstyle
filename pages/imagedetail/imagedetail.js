@@ -219,13 +219,16 @@ Page({
       url = url.replace('http', 'https');
     }
     console.log('url---' + url)
+    // wx.showToast({
+    //   title: url,
+    // })
     wx.getImageInfo({
       src: url,
       success: function(res) {
-        console.log('respath---' + res.path)
+        console.log('res path---' + res.path)
         app.globalData.bgPic = res.path;
         wx.navigateTo({
-          url: '../imageeditor/imageeditor',
+          url: '../imageeditor/imageeditor?bigImgPath=' + res.path,
         })
       }
     })

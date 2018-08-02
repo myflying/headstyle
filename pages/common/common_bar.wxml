@@ -34,7 +34,7 @@
           </block>
         </block>
         <block wx:if='{{title_txt}}'>
-          <view class='title-view'>
+          <view class='title-view' style='position:absolute;top:{{statusBarHeight+10}}px;left:15%'>
             <text class='title-txt'>{{title_txt}}</text>
           </view>
         </block>
@@ -45,7 +45,7 @@
         <view class='back-view'>
               <image class='back-img' src='../../images/bar_back.png' bindtap='backPage'></image>
         </view>
-        <view class='only-title-view'>
+        <view class='only-title-view' style='position:absolute;top:{{statusBarHeight+10}}px;left:10%'>
             <text class='only-title-txt'>{{title_txt}}</text>
           </view>
       </block>

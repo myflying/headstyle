@@ -10,9 +10,9 @@ Page({
 
   onLoad: function(options) {
     currentHatId = options.hindex;
-
+    
     currentHatImg = app.globalData.hatImgPath
-    console.log(currentHatImg)
+    console.log(app.globalData.bgPic)
     var that = this
     wx.getImageInfo({
       src: app.globalData.bgPic,
