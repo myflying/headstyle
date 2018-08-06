@@ -205,15 +205,8 @@ Page({
       url = url.replace('http', 'https');
     }
     console.log('url---' + url)
-    wx.getImageInfo({
-      src: url,
-      success: function(res) {
-        console.log('respath---' + res.path)
-        app.globalData.bgPic = res.path;
-        wx.navigateTo({
-          url: '../imageeditor/imageeditor',
-        })
-      }
+    wx.navigateTo({
+      url: '../imageeditor/imageeditor?bigImgUrl=' + url,
     })
   },
 

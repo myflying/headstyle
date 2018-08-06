@@ -62,7 +62,7 @@ page {
   flex-wrap: wrap;
   margin-left: 12rpx;
   margin-bottom: 100rpx;
-  justify-content: space-around;
+  justify-content: space-around; 
 }
 
 .img-item {

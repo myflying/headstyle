@@ -2,25 +2,19 @@
 const app = getApp();
 var currentHatId
 var currentHatImg
+var bigImgUrl
+var drawBigPath
 Page({
-
+  
   data: {
-
+    
   },
 
   onLoad: function(options) {
+    bigImgUrl = options.bigImgUrl
     currentHatId = options.hindex;
-    
-    currentHatImg = app.globalData.hatImgPath
-    console.log(app.globalData.bgPic)
-    var that = this
-    wx.getImageInfo({
-      src: app.globalData.bgPic,
-      success: res => {
-        that.bgPic = res.path
-        that.draw();
-      }
-    })
+    currentHatImg = options.currentHatPath
+    console.log('currentHatImg--->' + currentHatImg)
   },
 
   /**
@@ -30,6 +24,15 @@ Page({
     this.setData({
       statusBarHeight: getApp().globalData.statusBarHeight,
       titleBarHeight: getApp().globalData.titleBarHeight
+    })
+
+    var that = this
+    wx.getImageInfo({
+      src: bigImgUrl,
+      success: res => {
+        drawBigPath = res.path
+        that.draw();
+      }
     })
   },
   backPage: function(e) {
@@ -46,7 +49,7 @@ Page({
     const hat_size = 100 * scale;
 
     pc.clearRect(0, 0, windowWidth, 300);
-    pc.drawImage(this.bgPic, windowWidth / 2 - 150, 0, 300, 300);
+    pc.drawImage(drawBigPath, windowWidth / 2 - 150, 0, 300, 300);
     pc.translate(hat_center_x, hat_center_y);
     pc.rotate(rotate * Math.PI / 180);
     pc.drawImage(currentHatImg, -hat_size / 2, -hat_size / 2, hat_size, hat_size);

@@ -222,15 +222,8 @@ Page({
     // wx.showToast({
     //   title: url,
     // })
-    wx.getImageInfo({
-      src: url,
-      success: function(res) {
-        console.log('res path---' + res.path)
-        app.globalData.bgPic = res.path;
-        wx.navigateTo({
-          url: '../imageeditor/imageeditor?bigImgPath=' + res.path,
-        })
-      }
+    wx.navigateTo({
+      url: '../imageeditor/imageeditor?bigImgUrl=' + url,
     })
   },
 

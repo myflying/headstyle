@@ -5,7 +5,8 @@ var iurl;
 var total_bar_height
 var imgList
 var currentHatImgurl
-var bgPicPath
+var bigImgUrl
+var currentHatPath
 Page({
   data: {
     bgPic:null,
@@ -25,22 +26,23 @@ Page({
     is_sticker:true,
   },
   onLoad(options){
-    //console.log(options.url)
-    //iurl = options.url
-    console.log(options.bigImgPath)
-    bgPicPath = options.bigImgPath
-    //app.globalData.bgPic = 'http://ntx.qqtn.com/up/xcx/2018-07-27/5b5a7bbd7bf375.79041377.png'
-    // wx.showToast({
-    //   title: bgPicPath,
-    // })
-    this.setData({
-      bgPic: bgPicPath,
-      is_sticker:true
+    var that = this
+
+    console.log(options.bigImgUrl)
+    bigImgUrl = options.bigImgUrl
+    
+    wx.getImageInfo({
+      src: options.bigImgUrl,
+      success: function (res) {
+        console.log('res path---' + res.path)
+        that.setData({
+          bgPic: res.path,
+          is_sticker: true
+        })
+      }
     })
+    
     total_bar_height = getApp().globalData.statusBarHeight + getApp().globalData.titleBarHeight
-
-
-    var that = this;
     let times = Date.parse(new Date())
     let uuid = validate.guid()
     let md5Temp = validate.md5Sign(times, uuid)
@@ -66,6 +68,7 @@ Page({
           src: imgList[0].ico,
           success: function (res) {
             app.globalData.hatImgPath = res.path
+            currentHatPath = res.path
           }
         })
       }
@@ -189,14 +192,12 @@ Page({
       currentHatImgurl = currentHatImgurl.replace('http', 'https');
     }
 
-    // wx.showToast({
-    //   title: currentHatImgurl,
-    // })
     var that = this
     wx.getImageInfo({
       src: currentHatImgurl,
       success: function (res) {
-        app.globalData.hatImgPath = res.path  
+        app.globalData.hatImgPath = res.path
+        currentHatPath = res.path
       }
     })
     
@@ -208,7 +209,7 @@ Page({
     app.globalData.hat_center_y = this.hat_center_y - total_bar_height;
     app.globalData.currentHatId = this.data.currentHatId;
     wx.navigateTo({
-      url: '../combine/combine?hindex=' + this.data.currentHatId + '&bigPic=' + bgPicPath
+      url: '../combine/combine?hindex=' + this.data.currentHatId + '&bigImgUrl=' + bigImgUrl + '&currentHatPath=' + currentHatPath
     })
   },
   deletesticker:function(e){

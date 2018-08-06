@@ -11,13 +11,14 @@ page {
   overflow: hidden;
   flex-wrap: wrap;
   margin-left: 12rpx;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .img-item {
   width: 230rpx;
   height: 230rpx;
   margin-top: 20rpx;
+  margin-left: 12rpx;
   display: flex;
   justify-content: center;
 }
