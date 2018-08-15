@@ -40,6 +40,7 @@ App({
             //stitle = stitles[index]
             vm.globalData.appShareName = stitles[index]
             vm.globalData.appShareIco = simgs[index]
+            //console.log('随机--->' + simgs[index])
           }
         }
       }
@@ -58,8 +59,8 @@ App({
             if (null != userRes && null != userRes.userInfo) {
               var userData = userRes.userInfo;
               t.globalData.userInfo = userData;
-              wx.setStorageSync('user_info', userData)
-
+              console.log(userData)
+              
               //获取用户的encryptedData，向服务器发起注册
               let url = "https://ntx.qqtn.com/api/login/login"
               let data = {
@@ -77,6 +78,8 @@ App({
                 method: 'POST',
                 header: header,
                 success: function (result) {
+                  console.log(result.data.data)
+                  wx.setStorageSync('user_info', result.data.data)
                   console.log('token--->' + result.data.data.token.token)
                   saveToken(result.data.data.token.token) //缓存token
                   //getUserInfo();

@@ -4,9 +4,20 @@ var cid
 var page = 1
 var list
 var typeName
+var adsarray = ['adunit-5fd971d74d692ee5',
+  'adunit-3b1452e367f0fb87',
+  'adunit-21ff4302ff99c7d5',
+  'adunit-65288e0f48bd1119',
+  'adunit-6d9c1f217f6104d2',
+  'adunit-53208e4be85067cf',
+  'adunit-9518bd162dc56d52',
+  'adunit-c180edc18406072f',
+  'adunit-913a55cb779fdb55',
+  'adunit-a588277b964e4f90']
 Page({
   data: {
-    is_load_more: false
+    is_load_more: false,
+    ads: adsarray
   },
   onLoad: function(options) {
     //console.log(e.cid)
@@ -46,7 +57,7 @@ Page({
     }
 
     wx.request({
-      url: 'https://ntx.qqtn.com/index/api?action=0',
+      url: 'https://ntx.qqtn.com/api/my/index',
       method: 'GET',
       data: {
         'p': page,
@@ -55,7 +66,7 @@ Page({
         'timestamp': times,
         'randstr': uuid,
         'corestr': md5Temp,
-        'is_login': wx.getStorageSync('user_info') ? 1:0
+        'openid': wx.getStorageSync('user_info') ? wx.getStorageSync('user_info').openId : 0
       },
       success: function(res) {
         wx.hideLoading()
@@ -101,7 +112,7 @@ Page({
       md5Temp = md5Temp.substring(md5Temp.length - 16)
     }
     wx.request({
-      url: 'https://ntx.qqtn.com/index/api?action=0',
+      url: 'https://ntx.qqtn.com/api/my/index',
       method: 'GET',
       data: {
         'p': page,
@@ -109,7 +120,8 @@ Page({
         'num': 48,
         'timestamp': times,
         'randstr': uuid,
-        'corestr': md5Temp
+        'corestr': md5Temp,
+        'openid': wx.getStorageSync('user_info') ? wx.getStorageSync('user_info').openId : 0
       },
       success: function(res) {
         wx.hideLoading()

@@ -9,7 +9,7 @@
       <image class='wx-image' src='{{item.hurl}}' mode='widthFix' bindtap='preimage'></image>
     </swiper-item>
   </swiper>
-  <!-- <view class='ad'><ad unit-id="adunit-d8ba3ecd0a233d96" class="ad-show"></ad></view> -->
+  <view class='ad'><ad wx:if="{{ad_unit_id.length > 0}}" unit-id="{{ad_unit_id}}" class="ad-show"></ad></view>
 </view>
 
 <view class='bottom-content'>

@@ -36,8 +36,10 @@
             </view>
         </view>
         <view class='img-list'>
-        <block wx:for="{{array}}" wx:key="id" wx:for-item="item">
-            <view wx:if='{{ (index) % 15 == 0}}' class='ad'><ad unit-id="adunit-bc2708a82ac831ef" class="ad-show"></ad></view>
+        <block wx:for="{{array}}" wx:key="id" wx:for-item="item" wx:for-index="index">
+            <view wx:if='{{ (index) % 15 == 0}}' class='ad'>
+              <ad unit-id="{{ads[(index / 15) % 10]}}" class="ad-show"></ad>
+            </view>
             <view class='img-item' style="{{item.fixStyles}}"  bindtap='imagedetail' data-index='{{index}}' data-keep='{{item.is_keep}}' data-sharetitle='{{item.share_title}}'>
               <image src='{{item.hurl}}' class='item-img' mode='widthFix'></image>
             </view>

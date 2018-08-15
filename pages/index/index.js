@@ -16,6 +16,17 @@ var float_img
 var new_app_id
 var new_pre_img
 
+var adsarray = ['adunit-5fd971d74d692ee5',
+'adunit-3b1452e367f0fb87',
+'adunit-21ff4302ff99c7d5',
+'adunit-65288e0f48bd1119',
+'adunit-6d9c1f217f6104d2',
+'adunit-53208e4be85067cf',
+'adunit-9518bd162dc56d52',
+'adunit-c180edc18406072f',
+'adunit-913a55cb779fdb55',
+'adunit-bc2708a82ac831ef']
+
 Page({
   data: {
     is_login: false,
@@ -61,7 +72,8 @@ Page({
     }, {
       'typeName': '更多头像',
       'imageUrl': 'type08.png'
-    }]
+    }],
+    ads: adsarray
   },
 
   //滑动切换
@@ -143,7 +155,7 @@ Page({
     }
 
     wx.request({
-      url: 'https://ntx.qqtn.com/index/api?action=0',
+      url: 'https://ntx.qqtn.com/api/my/index',
       method: 'GET',
       data: {
         'p': page,
@@ -151,10 +163,10 @@ Page({
         'timestamp': times,
         'randstr': uuid,
         'corestr': md5Temp,
-        'is_login':wx.getStorageSync('user_info') ? 1:0
+        'openid': wx.getStorageSync('user_info') ? wx.getStorageSync('user_info').openId:0
       },
       success: function(res) {
-        console.log(res.data)
+        console.log(res.data.data.special)
         wx.hideLoading()
         wx.stopPullDownRefresh();
         list = res.data.data;
@@ -243,7 +255,7 @@ Page({
       key: 'user_info',
       success: function (res) {
         userInfo = res.data
-
+        console.log(userInfo)
         var nickName = userInfo ? userInfo.nickName : ''
         var userHead = userInfo ? userInfo.avatarUrl : that.data.user_head
         that.setData({
@@ -298,14 +310,15 @@ Page({
     }
 
     wx.request({
-      url: 'https://ntx.qqtn.com/index/api?action=0',
+      url: 'https://ntx.qqtn.com/api/my/index',
       method: 'GET',
       data: {
         'p': page,
         'num': 48,
         'timestamp': times,
         'randstr': uuid,
-        'corestr': md5Temp
+        'corestr': md5Temp,
+        'openid': wx.getStorageSync('user_info') ? wx.getStorageSync('user_info').openId : 0
       },
       success: function(res) {
         list = list.concat(res.data.data);
@@ -349,6 +362,7 @@ Page({
   },
   banner: function(e) {
     var sid = e.currentTarget.dataset.sid
+    console.log(sid)
     wx.navigateTo({
       url: '../collection/collection?sid=' + sid
     })
