@@ -4,16 +4,7 @@ var cid
 var page = 1
 var list
 var typeName
-var adsarray = ['adunit-5fd971d74d692ee5',
-  'adunit-3b1452e367f0fb87',
-  'adunit-21ff4302ff99c7d5',
-  'adunit-65288e0f48bd1119',
-  'adunit-6d9c1f217f6104d2',
-  'adunit-53208e4be85067cf',
-  'adunit-9518bd162dc56d52',
-  'adunit-c180edc18406072f',
-  'adunit-913a55cb779fdb55',
-  'adunit-a588277b964e4f90']
+var adsarray = ['adunit-5fd971d74d692ee5']
 Page({
   data: {
     is_load_more: false,

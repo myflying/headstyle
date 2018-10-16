@@ -47,12 +47,16 @@ page {
 
 .ad {
   width: 100%;
-  margin-bottom: 2rpx;
+  margin-top: 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .ad-show {
   width: 100%;
-  height: 100%;
+  height: 135px;
 }
 
 .img-list {

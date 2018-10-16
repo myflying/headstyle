@@ -13,16 +13,7 @@ var img_id;
 const app = getApp()
 var cid;
 var keep_img = '../../images/keep_normal.png'
-var adsarray = ['adunit-a3f5d12346800259',
-  'adunit-5501903c6efb04eb',
-  'adunit-e4e9dacb351f1bb4',
-  'adunit-7430a9ab92291377',
-  'adunit-15bf67fa5909ac94',
-  'adunit-2c2c47ab9dda894b',
-  'adunit-d1b5b2baca7f18dd',
-  'adunit-2e0dfe06f177bb85',
-  'adunit-fe06d33cbccc2dcf',
-  'adunit-d8ba3ecd0a233d96']
+var adsarray = ['adunit-a3f5d12346800259']
 Page({
   data: {
     currentTab: 0,
@@ -43,10 +34,8 @@ Page({
   },
   onLoad: function(options) {
     
-    var adindex = Math.floor(Math.random() * 10);
-    console.log(adsarray[adindex])
     this.setData({
-      ad_unit_id: adsarray[adindex]
+      ad_unit_id: adsarray[0]
     })
 
     console.log('is_keep--->' + options.is_keep)
